@@ -1,10 +1,13 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import Edge.java
 
 public class Polygon {
 	ArrayList<Point> vertices = new ArrayList<Point>();
 	ArrayList<Point> pixels = new ArrayList<Point>();
+	ArrayList<Edge> edgeTable = new ArrayList<Edge>();
+	ArrayList<Edge> activeEdgeTable = new ArrayList<Edge>();
 	Color color;
 	
 	public Polygon() {
@@ -51,6 +54,29 @@ public class Polygon {
 		// DEBUG
 		for (int i = vertices.get(0).x + gridSize; i <= vertices.get(1).x; i++) {
 			addPixel(new Point(i, vertices.get(0).y));
+		}
+	}
+
+	public void leftEdgeScan(int xmin, int xmax, int ymin, int ymax, int valor){
+		int x, y;
+		Point p;
+
+		x = xmin;
+		y = ymin;
+		numerador = xmax - xmin;
+		denominador = ymax - ymin;
+		incremento = denominador;
+
+		for(y = ymin; y <= ymax; y++){
+			//PintaPixel(x, y, valor)
+			p = (x, y);
+			addPixel(p);
+			incremento += numerador;
+
+			if (incremento > denominador){
+				x++;
+				incremento -= denominador;
+			}
 		}
 	}
 }
