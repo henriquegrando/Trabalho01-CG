@@ -47,7 +47,7 @@ public class Polygon {
 	}
 	
 	public void fillPolygon(int gridSize) {
-		// TODO: algoritmo que a moça pediu vai aqui
+		// TODO: algoritmo que a moca pediu vai aqui
 		// DEBUG
 		for (int i = vertices.get(0).x + gridSize; i <= vertices.get(1).x; i++) {
 			addPixel(new Point(i, vertices.get(0).y));
