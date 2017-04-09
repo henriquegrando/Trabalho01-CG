@@ -1,7 +1,9 @@
+//package my_package;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
-import Edge.java
+import Edges.*;
 
 public class Polygon {
 	ArrayList<Point> vertices = new ArrayList<Point>();
@@ -51,12 +53,16 @@ public class Polygon {
 	
 	public void fillPolygon(int gridSize) {
 		// TODO: algoritmo que a moca pediu vai aqui
+		
+		
 		// DEBUG
 		for (int i = vertices.get(0).x + gridSize; i <= vertices.get(1).x; i++) {
 			addPixel(new Point(i, vertices.get(0).y));
 		}
 	}
 
+	// inutil, a principio
+	/*
 	public void leftEdgeScan(int xmin, int xmax, int ymin, int ymax, int valor){
 		int x, y;
 		Point p;
@@ -77,6 +83,35 @@ public class Polygon {
 				x++;
 				incremento -= denominador;
 			}
+		}
+	}
+	*/
+	public void buildEdgeTable(){
+		Point v1, v2;
+		Edge edge;
+		int xmin, xmax, ymin, ymax, num, den, scanline, index;
+
+		for(Iterator<Point> i = vertices.iterator(); i.hasNext(); ) {
+    		//seleciona dois pontos consecutivos
+    		v1 = i.next();
+    		index = vertices.indexOf(v1);
+    		if (index == vertices.size())
+    			v2 = vertices.get(0);
+    		else
+    			v2 = vertices.get(index+1);
+
+    		//calculo das informacoes que fazem parte da tabela
+    		xmin = Math.min(v1.x, v2.x);
+    		ymax = Math.max(v1.y, v2.y);
+
+    		scanline = Math.min(v1.y, v2.y);
+
+    		// 1/m
+    		num = (v2.x - v1.x);
+    		den = (v2.y - v1.y);
+
+    		edgeTable.add(scanline, new Edge(ymax, xmin, num, den, scanline));
+
 		}
 	}
 }
