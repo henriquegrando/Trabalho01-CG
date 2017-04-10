@@ -52,9 +52,39 @@ public class Polygon {
 	}
 	
 	public void fillPolygon(int gridSize) {
+		Edge transfer, head, aux;
 		// TODO: algoritmo que a moca pediu vai aqui
 		
+		//Obtem a menor coordenada y armazenada na ET; ou seja, o valor de y do primeiro “cesto” nao vazio. 
+		buildEdgeTable();
+		int index = -1; //o grid nao tem posicoes negativas, certo?
+		boolean flag = false; 
+		int i = 0;
+		while (!flag){
+			if (edgeTable.get(i) == null) { i++;}
+			else {
+				flag = true;
+			}
+		}
+		index = i;
 		
+		//Transfere do cesto y na ET para a AET as arestas cujo ymin = y (lados que estao comecando a serem varridos), mantendo a AET ordenada em x
+		transfer = edgeTable.get(index);
+		if(activeEdgeTable.get(index) == null){
+			activeEdgeTable.add(index, transfer);
+		}
+		else{
+			aux = activeEdgeTable.get(index);
+			//head = aux;
+			while (aux.nextEdge != null){
+				aux = aux.nextEdge();
+			}
+			aux.addNextEdge(transfer);
+			// DUVIDA: como atualizar um elemento de uma lista ligada que nao é a cabeca (que esta no arraylist)
+			activeEdgeTable.add(index, aux);
+		}
+
+		//-------------------------
 		// DEBUG
 		for (int i = vertices.get(0).x + gridSize; i <= vertices.get(1).x; i++) {
 			addPixel(new Point(i, vertices.get(0).y));
