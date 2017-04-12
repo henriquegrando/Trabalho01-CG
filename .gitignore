@@ -1,5 +1,6 @@
 # Class files
 bin
+*.class
 
 # Mac files
 .DS_Store
