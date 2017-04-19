@@ -1,36 +1,36 @@
-Estrutura do cÛdigo atÈ ent„o:
+Estrutura do c√≥digo at√© ent√£o:
 Classe Polygons:
 	- Classe principal, main, setupGUI
 Classe DrawCanvas:
-	- Trata da API do Java para desenhar figuras. … interessante que ela seja "invisÌvel" para quem for implementar o cÛdigo pedido em aula,
-	i.e., n„o adicionar cÛdigo/alterar cÛdigo nessa classe (a n„o ser que necess·rio, por exemplo, ela cuida dos eventos do mouse).
+	- Trata da API do Java para desenhar figuras. √â interessante que ela seja "invis√≠vel" para quem for implementar o c√≥digo pedido em aula,
+	i.e., n√£o adicionar c√≥digo/alterar c√≥digo nessa classe (a n√£o ser que necess√°rio, por exemplo, ela cuida dos eventos do mouse).
 	Estrutura da classe:
-	- ArrayList<Polygon> polygons : lista de polÌgonos
+	- ArrayList<Polygon> polygons : lista de pol√≠gonos
 	- DefaultListModel<String> polygonNames : lista de strings do tipo "Polygon + <int>"
-	- JList<String> polygonList : elemento da GUI que exibe os nomes dos polÌgonos da lista polygonNames na interface
+	- JList<String> polygonList : elemento da GUI que exibe os nomes dos pol√≠gonos da lista polygonNames na interface
 
 Classe Polygon:
-	- Gerencia cada polÌgono desenhado em tela. Deve implementar os cÛdigos que moÁa pediu.
+	- Gerencia cada pol√≠gono desenhado em tela. Deve implementar os c√≥digos que mo√ßa pediu.
 	Estrutura da classe:
-	- ArrayList<Point> vertices : lista de vÈrtices adicionados atravÈs de cliques do mouse no canvas
-	- ArrayList<Pixels> pixels : pixels de preenchimento/arestas gerado pelo cÛdigo que a moÁa pediu
-	- Graphics g : tela onde s„o desenhadas a grade, os pixels, etc
+	- ArrayList<Point> vertices : lista de v√©rtices adicionados atrav√©s de cliques do mouse no canvas
+	- ArrayList<Pixels> pixels : pixels de preenchimento/arestas gerado pelo c√≥digo que a mo√ßa pediu
+	- Graphics g : tela onde s√£o desenhadas a grade, os pixels, etc
 
 FAQ
-. Como funciona o cÛdigo?
-A classe Polygons serve essencialmente para gerenciar a interface do programa e comunicar mudanÁas feitas pelo usu·rio ‡ classe DrawCanvas
-A classe DrawCanvas gerencia uma lista com todos os polÌgonos definidos pelo usu·rio. TambÈm gerencia eventos do mouse.
-Fornece uma estrutura para pintar "pixels" na grade, assim como gerar a prÛpria grade. Essa estrutura funciona da seguinte forma:
-	- Usu·rio clica em um espaÁo 
-	- Um ponto da grade È adicionado ao polÌgono selecionado (se nenhum, cria um novo)
-		- Se for o terceiro vÈrtice adicionado, chama a funÁ„o fillPolygon (cÛdigo da moÁa) que dever· preencher o polÌgono
-	- Chama-se a funÁ„o repaint(), que ir· chamar (internamente) paintComponent
-	- A grade È redesenhada e È chamado paintPolygon para cada polÌgono
-	- paintPolygon percorre as listas de vÈrtices e pixels pintando um ret‚ngulo do tamanho dos quadrados da grade (equivale a um pixel)
-A class Polygon contÈm todas as informaÁıes relativas a cor, vÈrtices e pixels de um polÌgono
+. Como funciona o c√≥digo?
+A classe Polygons serve essencialmente para gerenciar a interface do programa e comunicar mudan√ßas feitas pelo usu√°rio √† classe DrawCanvas
+A classe DrawCanvas gerencia uma lista com todos os pol√≠gonos definidos pelo usu√°rio. Tamb√©m gerencia eventos do mouse.
+Fornece uma estrutura para pintar "pixels" na grade, assim como gerar a pr√≥pria grade. Essa estrutura funciona da seguinte forma:
+	- Usu√°rio clica em um espa√ßo
+	- Um ponto da grade √© adicionado ao pol√≠gono selecionado (se nenhum, cria um novo)
+		- Se for o terceiro v√©rtice adicionado, chama a fun√ß√£o fillPolygon (c√≥digo da mo√ßa) que dever√° preencher o pol√≠gono
+	- Chama-se a fun√ß√£o repaint(), que ir√° chamar (internamente) paintComponent
+	- A grade √© redesenhada e √© chamado paintPolygon para cada pol√≠gono
+	- paintPolygon percorre as listas de v√©rtices e pixels pintando um ret√¢ngulo do tamanho dos quadrados da grade (equivale a um pixel)
+A class Polygon cont√©m todas as informa√ß√µes relativas a cor, v√©rtices e pixels de um pol√≠gono
 
-. Como implementar os cÛdigos pedidos em aula pela moÁa?
-Onde houver "paintPixel" no cÛdigo, deve-se, ao invÈs, chamar a funÁ„o "addPixel(Point p)"
+. Como implementar os c√≥digos pedidos em aula pela mo√ßa?
+Onde houver "paintPixel" no c√≥digo, deve-se, ao inv√©s, chamar a fun√ß√£o "addPixel(Point p)"
 . Como determinar as coordenadas corretas do ponto p?
 ---|------|------|------|------|------|---  ]
    |vertic|      |      |      |      |     ]
@@ -39,9 +39,9 @@ Onde houver "paintPixel" no cÛdigo, deve-se, ao invÈs, chamar a funÁ„o "addPixel
    |      |pixel |      |      |      |
    |      |      |      |      |      |
 ---|------|------|------|------|------|---
-Queremos pintar o pixel (1, 1) acima, dado o vÈrtice (0, 0). O tamanho da grade È 20, ou seja, cada quadrado tem 20 de lado e as coordenadas das
-intersecÁıes das linhas e colunas da grade s„o m˙ltiplos do tamanho da grade (20, no caso). Ou seja, para pintarmos o vÈrtice (0, 0), as coordenadas
-de p devem ser (0, 0)*. Para pintarmos o pixel (1, 1), as coordenadas de p devem ser (20, 20)*. Ou seja, È f·cil obter os pixels a partir dos vÈrtices
+Queremos pintar o pixel (1, 1) acima, dado o v√©rtice (0, 0). O tamanho da grade √© 20, ou seja, cada quadrado tem 20 de lado e as coordenadas das
+intersec√ß√µes das linhas e colunas da grade s√£o m√∫ltiplos do tamanho da grade (20, no caso). Ou seja, para pintarmos o v√©rtice (0, 0), as coordenadas
+de p devem ser (0, 0)*. Para pintarmos o pixel (1, 1), as coordenadas de p devem ser (20, 20)*. Ou seja, √© f√°cil obter os pixels a partir dos v√©rtices
 conhecendo-se o tamanho da grade gridSize.
-. Fiz tudo isso e t· pintando tudo zoado/n„o est· pintando nada/socorro. O que fazer?
-D· um toque que È f·cil de corrigir. :)
+. Fiz tudo isso e t√° pintando tudo zoado/n√£o est√° pintando nada/socorro. O que fazer?
+D√° um toque que √© f√°cil de corrigir. :)

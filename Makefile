@@ -1,7 +1,9 @@
-JFLAGS = -g -d
+JFLAGS = -g
 JC = javac
 SRC = ./src
 BIN = ./bin
+EXE = Polygons
+RM = rm -rf
 
 CLASSES = Polygon.java \
 				DrawCanvas.java \
@@ -9,15 +11,17 @@ CLASSES = Polygon.java \
 
 LIST = $(addprefix $(BIN)/, $(CLASSES:.java=.class))
 
-
-
 default: $(BIN) $(LIST)
 
 $(BIN):
 	mkdir -p $(BIN)
 
 $(BIN)/%.class: $(SRC)/%.java
-	$(JC) $(JFLAGS) $(BIN) $<
+	$(JC) $(JFLAGS) -d $(BIN)  -sourcepath $(SRC) $<
 
+.PHONY: clean run
 clean:
-	$(RM) $(BIN)/*.class
+	$(RM) $(BIN)
+
+run:
+	cd $(BIN); java $(EXE)
