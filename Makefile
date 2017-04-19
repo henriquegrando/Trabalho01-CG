@@ -7,7 +7,9 @@ RM = rm -rf
 
 CLASSES = Polygon.java \
 				DrawCanvas.java \
-        Polygons.java
+        Polygons.java	\
+				Edges/Edge.java \
+				Edges/EdgeTable.java 
 
 LIST = $(addprefix $(BIN)/, $(CLASSES:.java=.class))
 

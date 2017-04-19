@@ -66,41 +66,42 @@ public class Polygon {
 		}
 	}
 
+	// Fills the polygon using edge coherence algorithm
 	public void fillPolygon() {
-	// 	Edge transfer, head, aux;
-	// 	LinkedList<Edge> line;
-	// 	int y = 0;
-	//
-	// 	buildEdgeTable();
-	//
-	// 	// Get the first non-empty bucket of the Hashtable
-	// 	while((line = edgeTable.getLine(y)) == null){
-	// 		y++;
-	// 	}
-	//
-	// 	while(!edgeTable.isEmpty() && )
-	//
-	// 	//Transfere do cesto y na ET para a AET as arestas cujo ymin = y (lados que estao comecando a serem varridos), mantendo a AET ordenada em x
-	// 	transfer = edgeTable.get(index);
-	// 	if(activeEdgeTable.get(index) == null){
-	// 		activeEdgeTable.add(index, transfer);
-	// 	}
-	// 	else{
-	// 		aux = activeEdgeTable.get(index);
-	// 		//head = aux;
-	// 		while (aux.nextEdge != null){
-	// 			aux = aux.nextEdge();
-	// 		}
-	// 		aux.addNextEdge(transfer);
-	// 		// DUVIDA: como atualizar um elemento de uma lista ligada que nao é a cabeca (que esta no arraylist)
-	// 		activeEdgeTable.add(index, aux);
-	// 	}
-	//
-	// 	//-------------------------
-	// 	// DEBUG
-	// 	for (int i = vertices.get(0).x + this.gridSize; i <= vertices.get(1).x; i++) {
-	// 		addPixel(i, vertices.get(0).y);
-	// 	}
+		LinkedList<Edge> line;
+		int y = 0;
+
+		buildEdgeTable();
+
+		// Get the first non-empty bucket in the ET
+		while((line = edgeTable.getLine(y)) == null){
+			y++;
+		}
+
+		while(!edgeTable.isEmpty() || !activeEdgeTable.isEmpty()){
+
+			// Add in the AET all edges starting at the currently scanned line
+			for (Edge e : line)
+				activeEdgeTable.add(e);
+
+			// Remove from the AET all edges ending at the currently scanned line
+			for (int i = 0; i < activeEdgeTable.size(); i++)
+				if (activeEdgeTable.get(i).getYmax() == y)
+					activeEdgeTable.remove(i);
+
+			Collections.sort(activeEdgeTable);
+
+			// Add pixels to be painted
+			for (int i = 0; i < activeEdgeTable.size(); i += 2)
+				for (int x = activeEdgeTable.get(i).getXmin(); x < activeEdgeTable.get(i+1).getXmin(); x++)
+					addPixel(x,y);
+
+			// Scan Edges updating their x values
+			for (Edge e : activeEdgeTable)
+				e.scan();
+
+			line = edgeTable.getLine(++y);
+		}
 	}
 
 	// Builds the Edges of the Polygon based on the list of vertices
@@ -130,5 +131,7 @@ public class Polygon {
 
     		edgeTable.addEdge(ymin, new Edge(ymax, xmin, num, den));
 		}
+
+		edgeTable.sort();
 	}
 }
