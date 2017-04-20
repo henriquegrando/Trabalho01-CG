@@ -1,9 +1,16 @@
+
 //package my_package;
 
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.util.*;
-import edges.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import Edges.Edge;
+import Edges.EdgeTable;
 
 public class Polygon {
 	ArrayList<Point> vertices;
@@ -51,18 +58,25 @@ public class Polygon {
 		x *= this.gridSize;
 		y *= this.gridSize;
 
-		pixels.add(new Point(x,y));
+		pixels.add(new Point(x, y));
 	}
 
 	// Paints a polygon using the stored vertices and pixels
-	public void paintPolygon(Graphics g, int left, int top) {
-		g.setColor(color);
+	public void paintPolygon(Graphics g, int left, int top, boolean drawLabels) {
+		int i = 0;
 		for (Point v : vertices) {
-			g.fillRect(v.x + left, v.y + top, this.gridSize , this.gridSize);
+			g.setColor(color);
+			g.fillRect(v.x + left, v.y + top, this.gridSize, this.gridSize);
+			if (drawLabels) {
+				g.setColor(Color.BLACK);
+				g.drawString("V" + i, v.x + left + this.gridSize + 2, v.y + top - 2);
+				i++;	
+			}
 		}
 
+		g.setColor(color);
 		for (Point p : pixels) {
-			g.fillRect(p.x + left, p.y + top, this.gridSize , this.gridSize);
+			g.fillRect(p.x + left, p.y + top, this.gridSize, this.gridSize);
 		}
 	}
 
@@ -74,17 +88,18 @@ public class Polygon {
 		buildEdgeTable();
 
 		// Get the first non-empty bucket in the ET
-		while((line = edgeTable.getLine(y)) == null){
+		while ((line = edgeTable.getLine(y)) == null) {
 			y++;
 		}
 
-		while(!edgeTable.isEmpty() || !activeEdgeTable.isEmpty()){
+		while (!edgeTable.isEmpty() || !activeEdgeTable.isEmpty()) {
 
 			// Add in the AET all edges starting at the currently scanned line
 			for (Edge e : line)
 				activeEdgeTable.add(e);
 
-			// Remove from the AET all edges ending at the currently scanned line
+			// Remove from the AET all edges ending at the currently scanned
+			// line
 			for (int i = 0; i < activeEdgeTable.size(); i++)
 				if (activeEdgeTable.get(i).getYmax() == y)
 					activeEdgeTable.remove(i);
@@ -93,8 +108,8 @@ public class Polygon {
 
 			// Add pixels to be painted
 			for (int i = 0; i < activeEdgeTable.size(); i += 2)
-				for (int x = activeEdgeTable.get(i).getXmin(); x < activeEdgeTable.get(i+1).getXmin(); x++)
-					addPixel(x,y);
+				for (int x = activeEdgeTable.get(i).getXmin(); x < activeEdgeTable.get(i + 1).getXmin(); x++)
+					addPixel(x, y);
 
 			// Scan Edges updating their x values
 			for (Edge e : activeEdgeTable)
@@ -106,30 +121,30 @@ public class Polygon {
 
 	// Builds the Edges of the Polygon based on the list of vertices
 	// and adds each of them to the Polygon's Edge Table
-	private void buildEdgeTable(){
+	private void buildEdgeTable() {
 		Point v1, v2;
 		Edge edge;
 		int xmin, xmax, ymin, ymax, num, den, index;
 
-		for(Iterator<Point> i = vertices.iterator(); i.hasNext(); ) {
-    		// Select two consecutive points to build an Edge
-    		v1 = i.next();
-    		index = vertices.indexOf(v1);
-    		if (index == vertices.size())
-    			v2 = vertices.get(0);
-    		else
-    			v2 = vertices.get(index+1);
+		for (Iterator<Point> i = vertices.iterator(); i.hasNext();) {
+			// Select two consecutive points to build an Edge
+			v1 = i.next();
+			index = vertices.indexOf(v1);
+			if (index == vertices.size())
+				v2 = vertices.get(0);
+			else
+				v2 = vertices.get(index + 1);
 
-    		// Calculate Edge attributes
-    		xmin = Math.min(v1.x, v2.x);
-    		ymax = Math.max(v1.y, v2.y);
-    		ymin = Math.min(v1.y, v2.y);
+			// Calculate Edge attributes
+			xmin = Math.min(v1.x, v2.x);
+			ymax = Math.max(v1.y, v2.y);
+			ymin = Math.min(v1.y, v2.y);
 
-    		// 1/m
-    		num = (v2.x - v1.x);
-    		den = (v2.y - v1.y);
+			// 1/m
+			num = (v2.x - v1.x);
+			den = (v2.y - v1.y);
 
-    		edgeTable.addEdge(ymin, new Edge(ymax, xmin, num, den));
+			edgeTable.addEdge(ymin, new Edge(ymax, xmin, num, den));
 		}
 
 		edgeTable.sort();
