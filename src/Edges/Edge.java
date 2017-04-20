@@ -1,6 +1,5 @@
 package Edges;
 
-<<<<<<< HEAD
 // Note: this class has a natural ordering that is inconsistent with equals.
 public class Edge implements Comparable<Edge>{
 	int ymax;
