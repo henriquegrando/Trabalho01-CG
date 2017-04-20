@@ -44,7 +44,7 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 		g.setColor(Color.GRAY);
 		drawGrid(g, gridSize);
 
-		g.setFont(new Font("TimesRoman", Font.BOLD, 16)); 
+		g.setFont(new Font("TimesRoman", Font.BOLD, 16));
 		for (Polygon p : polygons) {
 			p.paintPolygon(g, insets.left, insets.top, drawLabels);
 		}
@@ -104,7 +104,7 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 		} else
 			return;
 	}
-	
+
 	// Deletes selected polygon
 	public void deletePolygon(int k) {
 		if (k != -1 && k < polygons.size()) {
@@ -114,9 +114,10 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 			repaint();
 		}
 	}
-	
+
 	// Calls fillPolygon function for selected polygon
 	public void drawPolygon(int k) {
+		System.out.println(k);
 		if (k != -1 && k < polygons.size())
 			polygons.get(k).fillPolygon();
 	}
@@ -138,7 +139,6 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 		Point newPoint = new Point(x, y);
 
 		int index = polygonList.getSelectedIndex();
-
 		if (index != -1) {
 			Polygon p = polygons.get(index);
 			p.addVertice(newPoint);

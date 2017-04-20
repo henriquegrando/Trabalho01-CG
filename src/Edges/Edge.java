@@ -34,6 +34,8 @@ public class Edge implements Comparable<Edge>{
 
 	// Updates Edge's xmin considering an increment of 1 in y cordinate
 	public void scan(){
+		if (num == 0)
+			return;
 
 		// Left and top edge scan
 		if (num > 0 && den > 0){
@@ -62,5 +64,11 @@ public class Edge implements Comparable<Edge>{
 	@Override
 	public int compareTo(Edge other) {
 		return this.xmin - other.xmin;
+	}
+
+	// toString method for debug
+	@Override
+	public String toString() {
+		return ("\n\tXmin: " + xmin + "\n\tYmax: " + ymax + "\n\t1/m: " + num + "/" + den + "\n");
 	}
 }

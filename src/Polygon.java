@@ -70,7 +70,7 @@ public class Polygon {
 			if (drawLabels) {
 				g.setColor(Color.BLACK);
 				g.drawString("V" + i, v.x + left + this.gridSize + 2, v.y + top - 2);
-				i++;	
+				i++;
 			}
 		}
 
@@ -87,19 +87,21 @@ public class Polygon {
 
 		buildEdgeTable();
 
-		// Get the first non-empty bucket in the ET
-		while ((line = edgeTable.getLine(y)) == null) {
-			y++;
-		}
-
 		while (!edgeTable.isEmpty() || !activeEdgeTable.isEmpty()) {
 
-			// Add in the AET all edges starting at the currently scanned line
-			for (Edge e : line)
-				activeEdgeTable.add(e);
+			// Get the first non-empty bucket in the ET
+			while ((line = edgeTable.getLine(y)) == null){
+				y++;
+			}
 
-			// Remove from the AET all edges ending at the currently scanned
-			// line
+			// Add in the AET all edges starting at the currently scanned line
+			for (Edge e : line){
+				activeEdgeTable.add(e);
+			}
+
+			System.out.println(y);
+
+			// Remove from the AET all edges ending at the currently scanned line
 			for (int i = 0; i < activeEdgeTable.size(); i++)
 				if (activeEdgeTable.get(i).getYmax() == y)
 					activeEdgeTable.remove(i);
@@ -107,15 +109,15 @@ public class Polygon {
 			Collections.sort(activeEdgeTable);
 
 			// Add pixels to be painted
-			for (int i = 0; i < activeEdgeTable.size(); i += 2)
+			for (int i = 0; i < activeEdgeTable.size() - 1; i += 2)
 				for (int x = activeEdgeTable.get(i).getXmin(); x < activeEdgeTable.get(i + 1).getXmin(); x++)
 					addPixel(x, y);
+
+			System.out.println(activeEdgeTable);
 
 			// Scan Edges updating their x values
 			for (Edge e : activeEdgeTable)
 				e.scan();
-
-			line = edgeTable.getLine(++y);
 		}
 	}
 
@@ -130,7 +132,7 @@ public class Polygon {
 			// Select two consecutive points to build an Edge
 			v1 = i.next();
 			index = vertices.indexOf(v1);
-			if (index == vertices.size())
+			if (index == vertices.size() - 1)
 				v2 = vertices.get(0);
 			else
 				v2 = vertices.get(index + 1);

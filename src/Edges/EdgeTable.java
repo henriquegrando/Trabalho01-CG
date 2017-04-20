@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
+import java.lang.StringBuilder;
 
 public class EdgeTable {
 	Hashtable<Integer, LinkedList<Edge>> et;
@@ -39,4 +40,28 @@ public class EdgeTable {
 			Collections.sort(line.getValue());
 		}
 	}
+
+  // toString method for debug
+  @Override
+  public String toString() {
+    StringBuilder str = new StringBuilder();
+
+    for (Map.Entry<Integer, LinkedList<Edge>> line : et.entrySet()){
+      str.append(line.toString() + "\n");
+    }
+
+    return str.toString();
+  }
+
+  /* Test main function
+  public static void main(String[] args){
+    EdgeTable et  = new EdgeTable();
+
+    et.addEdge(0, new Edge(12,2,3,4));
+    et.addEdge(0, new Edge(12,1,2,3));
+    et.sort();
+    et.addEdge(1, new Edge(10,4,2,1));
+    System.out.println(et);
+
+  } */
 }
