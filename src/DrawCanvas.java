@@ -1,14 +1,23 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.util.*;
+import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.MouseInputListener;
 
 public class DrawCanvas extends JPanel implements MouseInputListener {
 	ArrayList<Polygon> polygons = new ArrayList<Polygon>();
 	DefaultListModel<String> polygonNames = new DefaultListModel<>();
 	JList<String> polygonList = new JList<>(polygonNames);
+	public boolean drawLabels = true;
 
 	int gridSize = 20;
 	Insets insets;
@@ -26,7 +35,7 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 	// Paints the background, grid, and polygons
 	@Override
 	protected void paintComponent(Graphics g) {
-		// Paint background if we're opaque.
+		// Paint background if we're opaque
 		if (isOpaque()) {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
@@ -35,8 +44,9 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 		g.setColor(Color.GRAY);
 		drawGrid(g, gridSize);
 
+		g.setFont(new Font("TimesRoman", Font.BOLD, 16)); 
 		for (Polygon p : polygons) {
-			p.paintPolygon(g, insets.left, insets.top);
+			p.paintPolygon(g, insets.left, insets.top, drawLabels);
 		}
 	}
 
@@ -73,7 +83,7 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 	public void clearCanvas() {
 		polygons.clear();
 		polygonNames.clear();
-		repaint();	// calls paintComponent()
+		repaint(); // calls paintComponent()
 	}
 
 	// Changes color of the selected polygon
@@ -91,8 +101,24 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 		if (p != null) {
 			polygons.add(p);
 			polygonNames.addElement("Polygon " + polygons.size());
+		} else
+			return;
+	}
+	
+	// Deletes selected polygon
+	public void deletePolygon(int k) {
+		if (k != -1 && k < polygons.size()) {
+			System.out.println(k);
+			polygons.remove(k);
+			polygonNames.remove(k);
+			repaint();
 		}
-		else return;
+	}
+	
+	// Calls fillPolygon function for selected polygon
+	public void drawPolygon(int k) {
+		if (k != -1 && k < polygons.size())
+			polygons.get(k).fillPolygon();
 	}
 
 	public JList<String> getPolygonList() {
@@ -104,7 +130,7 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 	// Otherwise, creates the first vertex of a new Polygon
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int x = (e.getX() -  insets.left) / this.gridSize;
+		int x = (e.getX() - insets.left) / this.gridSize;
 		int y = (e.getY() - insets.top) / this.gridSize;
 		x = x * this.gridSize;
 		y = y * this.gridSize;
@@ -116,20 +142,18 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 		if (index != -1) {
 			Polygon p = polygons.get(index);
 			p.addVertice(newPoint);
-			if (p.sizeOfVertices() >= 3)
-				p.fillPolygon();
 		}
 
 		else {
 			if (polygons.isEmpty())
 				addPolygon(new Polygon(this.gridSize, color));
 
-			//polygons.get(0).setColor(color);
+			// polygons.get(0).setColor(color);
 			polygons.get(0).addVertice(newPoint);
 		}
-		//vertices.add(newPoint);
+		// vertices.add(newPoint);
 
-		repaint();	// calls paintComponent
+		repaint(); // calls paintComponent
 	}
 
 	@Override

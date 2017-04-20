@@ -1,15 +1,15 @@
-package edges;
-import java.lang.Math;
+package Edges;
 
+<<<<<<< HEAD
 // Note: this class has a natural ordering that is inconsistent with equals.
 public class Edge implements Comparable<Edge>{
 	int ymax;
 	int xmin;
 	int num;	// numerator
 	int den;	// and denominator of the (edge's angular coeficient) ^ -1 --> 1/m
-	int increment;
+	int inc;
 
-	public Edge(int ymax, int xmin, int num, int den){
+	public Edge(int ymax, int xmin, int num, int den) {
 		this.ymax = ymax;
 		this.xmin = xmin;
 		this.num = num;
@@ -17,19 +17,19 @@ public class Edge implements Comparable<Edge>{
 		this.inc = den;
 	}
 
-	public int getYmax(){
+	public int getYmax() {
 		return ymax;
 	}
 
-	public int getXmin(){
+	public int getXmin() {
 		return xmin;
 	}
 
-	public int getNum(){
+	public int getNum() {
 		return num;
 	}
 
-	public int getDen(){
+	public int getDen() {
 		return den;
 	}
 
@@ -61,7 +61,7 @@ public class Edge implements Comparable<Edge>{
 
 	// Compare edges by its xmin parameters
 	@Override
-	public int compareTo(Edge other){
+	public int compareTo(Edge other) {
 		return this.xmin - other.xmin;
 	}
 }
