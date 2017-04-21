@@ -13,13 +13,6 @@ import Edges.Edge;
 import Edges.EdgeTable;
 
 public class Polygon {
-<<<<<<< HEAD
-	ArrayList<Point> vertices = new ArrayList<Point>();
-	ArrayList<Point> pixels = new ArrayList<Point>();
-	Color color;
-
-	public Polygon() {
-=======
 	ArrayList<Point> vertices;
 	ArrayList<Point> pixels;
 	
@@ -34,20 +27,15 @@ public class Polygon {
 		pixels = new ArrayList<Point>();
 		edgeTable = new EdgeTable();
 		activeEdgeTable = new ArrayList<Edge>();
->>>>>>> development
 		color = Color.GRAY;
 		this.gridSize = gridSize;
 	}
 
-<<<<<<< HEAD
-	public Polygon(Color color) {
-=======
 	public Polygon(int gridSize, Color color) {
 		vertices = new ArrayList<Point>();
 		pixels = new ArrayList<Point>();
 		edgeTable = new EdgeTable();
 		activeEdgeTable = new ArrayList<Edge>();
->>>>>>> development
 		this.color = color;
 		this.gridSize = gridSize;
 	}
@@ -68,13 +56,6 @@ public class Polygon {
 		return vertices.size();
 	}
 
-<<<<<<< HEAD
-	public void addPixel(Point p) {
-		pixels.add(p);
-	}
-
-	public void paintPolygon(Graphics g, int gridSize, int left, int top) {
-=======
 	public void addPixel(int x, int y) {
 		//x *= this.gridSize;
 		//y *= this.gridSize;
@@ -85,7 +66,6 @@ public class Polygon {
 	// Paints a polygon using the stored vertices and pixels
 	public void paintPolygon(Graphics g, int left, int top, boolean drawLabels) {
 		int i = 0;
->>>>>>> development
 		g.setColor(color);
 		for (Point p : pixels) {
 			g.fillRect(p.x + left, p.y + top, this.gridSize, this.gridSize);
@@ -100,19 +80,6 @@ public class Polygon {
 				i++;
 			}
 		}
-<<<<<<< HEAD
-
-		for (Point p : pixels) {
-			g.fillRect(p.x + left, p.y + top, gridSize , gridSize);
-		}
-	}
-
-	public void fillPolygon(int gridSize) {
-		// TODO: algoritmo que a prof pediu vai aqui
-		// DEBUG
-		for (int i = vertices.get(0).x + gridSize; i <= vertices.get(1).x; i++) {
-			addPixel(new Point(i, vertices.get(0).y));
-=======
 	}
 
 	// Fills the polygon using edge coherence algorithm
@@ -203,7 +170,6 @@ public class Polygon {
 			den = ymax - ymin;
 
 			edgeTable.addEdge(ymin, new Edge(ymax, xmin, num, den));
->>>>>>> development
 		}
 
 		edgeTable.sort();
