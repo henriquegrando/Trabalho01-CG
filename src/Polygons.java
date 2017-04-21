@@ -44,7 +44,7 @@ public class Polygons {
 		JPanel sliderPanel = new JPanel();
 		sliderPanel.setBorder(new TitledBorder("Grid"));
 
-	    JSlider slider = new JSlider(5, 55, 20);
+	    JSlider slider = new JSlider(5, 55, 10);
 	    slider.setMinorTickSpacing(1);
 	    slider.setMajorTickSpacing(10);
 	    slider.setPaintTicks(true);
@@ -131,7 +131,7 @@ public class Polygons {
 	    labelsChb.addChangeListener(new ChangeListener() {
 	    	public void stateChanged(ChangeEvent e) {
 	    		canvas.drawLabels = labelsChb.isSelected();
-	    		canvas.repaint();
+	    		//canvas.repaint();
 	    	}
 	    });
 	    buttons.add(labelsChb);
@@ -158,7 +158,7 @@ public class Polygons {
 	  	frame.add(sidePanel, BorderLayout.LINE_START);
 	
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	  	frame.setSize(360, 300);
+	  	frame.setSize(700, 500);
 	  	//frame.pack();
 	  	frame.setLocationRelativeTo(null);
 			frame.setVisible(true);

@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MouseInputListener;
 
@@ -108,7 +109,7 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 	// Deletes selected polygon
 	public void deletePolygon(int k) {
 		if (k != -1 && k < polygons.size()) {
-			System.out.println(k);
+			//System.out.println(k);
 			polygons.remove(k);
 			polygonNames.remove(k);
 			repaint();
@@ -117,9 +118,27 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 
 	// Calls fillPolygon function for selected polygon
 	public void drawPolygon(int k) {
-		System.out.println(k);
-		if (k != -1 && k < polygons.size())
-			polygons.get(k).fillPolygon();
+		//System.out.println(k);
+		if (k >= polygons.size())
+			return;
+		
+		if (k == -1) {
+			if (!polygons.isEmpty())
+				k = 0;
+			else {
+				JOptionPane.showMessageDialog(null, "No polygon selected.", "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+		
+		Polygon p = polygons.get(k);
+		
+		if (p.sizeOfVertices() < 3)
+			JOptionPane.showMessageDialog(null, "Polygon must have at least three distinct vertices.", "Warning", JOptionPane.WARNING_MESSAGE);
+		
+		else p.fillPolygon();
+
+		repaint();
 	}
 
 	public JList<String> getPolygonList() {

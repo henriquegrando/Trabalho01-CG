@@ -32,8 +32,8 @@ public class Edge implements Comparable<Edge>{
 		return den;
 	}
 
-	// Updates Edge's xmin considering an increment of 1 in y cordinate
-	public void scan(){
+	// Updates Edge's xmin considering an increment of 1 in y coordinate
+	public void scan(int gridSize){
 		if (num == 0)
 			return;
 
@@ -44,7 +44,7 @@ public class Edge implements Comparable<Edge>{
 			// Loop run more than once for top edge
 			while (inc > den){
 				inc -= den;
-				xmin++;
+				xmin += gridSize;
 			}
 		}
 
@@ -55,7 +55,7 @@ public class Edge implements Comparable<Edge>{
 			// Loop run more than once for bottom edge
 			while (Math.abs(inc) > Math.abs(den)){
 				inc -= den;
-				xmin--;
+				xmin -= gridSize;
 			}
 		}
 	}
