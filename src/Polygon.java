@@ -15,10 +15,10 @@ import Edges.EdgeTable;
 public class Polygon {
 	ArrayList<Point> vertices;
 	ArrayList<Point> pixels;
-	
+
 	EdgeTable edgeTable;
 	ArrayList<Edge> activeEdgeTable;
-	
+
 	Color color;
 	int gridSize;
 
@@ -52,6 +52,10 @@ public class Polygon {
 		vertices.add(v);
 	}
 
+	public boolean hasVertice (Point v){
+		return vertices.contains(v);
+	}
+
 	public int sizeOfVertices() {
 		return vertices.size();
 	}
@@ -70,7 +74,7 @@ public class Polygon {
 		for (Point p : pixels) {
 			g.fillRect(p.x + left, p.y + top, this.gridSize, this.gridSize);
 		}
-		
+
 		for (Point v : vertices) {
 			g.setColor(color);
 			g.fillRect(v.x + left, v.y + top, this.gridSize, this.gridSize);
@@ -86,15 +90,20 @@ public class Polygon {
 	public void fillPolygon() {
 		LinkedList<Edge> line;
 
+		// Remove previously selected pixels to be painted
+		pixels.clear();
+
 		buildEdgeTable();
-		
+
 		int y = 0;
 		// Get the first non-empty bucket in the ET
 		while ((line = edgeTable.getLine(y)) == null){
 			y += this.gridSize;
 		}
 
-		while (!edgeTable.isEmpty() || !activeEdgeTable.isEmpty()) {
+		System.out.println(line);
+
+		while (!edgeTable.isEmpty() || !activeEdgeTable.isEmpty() || line != null) {
 			// Add in the AET all edges starting at the currently scanned line
 			if (line != null) {
 				for (Edge e : line){
@@ -103,7 +112,7 @@ public class Polygon {
 			}
 
 			System.out.println("y: " + y);
-			
+
 			Collections.sort(activeEdgeTable);
 
 			// Remove from the AET all edges ending at the currently scanned line
@@ -114,8 +123,9 @@ public class Polygon {
 					activeEdgeTable.remove(i);
 					i--;
 				}
-			}	
-			
+			}
+
+
 			// Add pixels to be painted
 			for (int i = 0; i < activeEdgeTable.size() - 1; i += 2) {
 				int x1 = activeEdgeTable.get(i).getXmin();
@@ -124,13 +134,13 @@ public class Polygon {
 					addPixel(x, y);
 				}
 			}
-			
+
 			// Print active edge table
 			System.out.println(activeEdgeTable);
 
 			y += this.gridSize;
 			line = edgeTable.getLine(y);
-			
+
 			// Scan Edges updating their x values
 			for (Edge e : activeEdgeTable)
 				e.scan(this.gridSize);
@@ -151,7 +161,7 @@ public class Polygon {
 				v2 = vertices.get(0);
 			else
 				v2 = vertices.get(index + 1);
-			
+
 			// Calculate Edge attributes
 			if (v2.y > v1.y) {
 				ymax = v2.y;
@@ -159,19 +169,24 @@ public class Polygon {
 				xmin = v1.x;
 				num = v2.x - v1.x;
 			}
-			
+
 			else {
 				ymax = v1.y;
 				ymin = v2.y;
 				xmin = v2.x;
 				num = v1.x - v2.x;
 			}
-			
+
 			den = ymax - ymin;
 
 			edgeTable.addEdge(ymin, new Edge(ymax, xmin, num, den));
 		}
 
 		edgeTable.sort();
+	}
+
+	// Clears the vertices markers
+	public void clearMarkers(){
+		vertices.clear();
 	}
 }

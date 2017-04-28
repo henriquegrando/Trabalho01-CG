@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MouseInputListener;
+import javax.swing.SwingUtilities;
 
 public class DrawCanvas extends JPanel implements MouseInputListener {
 	ArrayList<Polygon> polygons = new ArrayList<Polygon>();
@@ -22,7 +23,8 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 
 	int gridSize = 20;
 	Insets insets;
-	Color color = Color.GRAY;
+	Color color = Color.gray;
+	int polygonNumber = 1;
 
 	public DrawCanvas() {
 		setBorder(BorderFactory.createEtchedBorder());
@@ -95,14 +97,19 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 		if (index != -1) {
 			polygons.get(index).setColor(color);
 		}
+
+		repaint();
 	}
 
 	// Adds a polygon to be printed
 	public void addPolygon(Polygon p) {
 		if (p != null) {
 			polygons.add(p);
-			polygonNames.addElement("Polygon " + polygons.size());
-		} else
+			int index = polygonList.getLastVisibleIndex() + 1;
+			polygonNames.addElement("Polygon " + polygonNumber++);
+			polygonList.setSelectedIndex(index);
+		}
+		else
 			return;
 	}
 
@@ -119,24 +126,18 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 	// Calls fillPolygon function for selected polygon
 	public void drawPolygon(int k) {
 		//System.out.println(k);
-		if (k >= polygons.size())
+		if (k >= polygons.size() || k == -1)
 			return;
-		
-		if (k == -1) {
-			if (!polygons.isEmpty())
-				k = 0;
-			else {
-				JOptionPane.showMessageDialog(null, "No polygon selected.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-		}
-		
+
 		Polygon p = polygons.get(k);
-		
+
 		if (p.sizeOfVertices() < 3)
 			JOptionPane.showMessageDialog(null, "Polygon must have at least three distinct vertices.", "Warning", JOptionPane.WARNING_MESSAGE);
-		
+
 		else p.fillPolygon();
+
+		// Clear the vertices list so the vertices markers don't get painted
+		p.clearMarkers();
 
 		repaint();
 	}
@@ -145,34 +146,54 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 		return polygonList;
 	}
 
-	// Handles click events
-	// If a polygon is being drawn adds a new vertex to that polygon.
-	// Otherwise, creates the first vertex of a new Polygon
+	// Handles right and left click events
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int x = (e.getX() - insets.left) / this.gridSize;
-		int y = (e.getY() - insets.top) / this.gridSize;
-		x = x * this.gridSize;
-		y = y * this.gridSize;
 
-		Point newPoint = new Point(x, y);
-
-		int index = polygonList.getSelectedIndex();
-		if (index != -1) {
-			Polygon p = polygons.get(index);
-			p.addVertice(newPoint);
+		// Right click -> draws polygon
+		if (SwingUtilities.isRightMouseButton(e)) {
+			int index = polygonList.getSelectedIndex();
+			if (index != -1) {
+				drawPolygon(index);
+			}
 		}
 
-		else {
-			if (polygons.isEmpty())
-				addPolygon(new Polygon(this.gridSize, color));
+		// Left click -> if a polygon is being drawn adds a new vertex to that polygon.
+		// 								Otherwise, creates the first vertex of a new Polygon
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			int x = (e.getX() - insets.left) / this.gridSize;
+			int y = (e.getY() - insets.top) / this.gridSize;
+			x = x * this.gridSize;
+			y = y * this.gridSize;
 
-			// polygons.get(0).setColor(color);
-			polygons.get(0).addVertice(newPoint);
+			Point newPoint = new Point(x, y);
+
+			int index = polygonList.getSelectedIndex();
+			if (index != -1) {
+				Polygon p = polygons.get(index);
+				if (!p.hasVertice(newPoint))
+					p.addVertice(newPoint);
+			}
+			else {
+				if (polygons.isEmpty()) {
+					addPolygon(new Polygon(this.gridSize, color));
+					polygonList.setSelectedIndex(0);
+				}
+				else {
+					int last = polygonList.getLastVisibleIndex();
+					polygonList.setSelectedIndex(last);
+				}
+
+				// polygons.get(0).setColor(color);
+				Polygon p = polygons.get(0);
+				if (!p.hasVertice(newPoint))
+					p.addVertice(newPoint);
+			}
+			// vertices.add(newPoint);
+
+			repaint(); // calls paintComponent
 		}
-		// vertices.add(newPoint);
 
-		repaint(); // calls paintComponent
 	}
 
 	@Override

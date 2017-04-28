@@ -6,6 +6,7 @@ import javax.swing.colorchooser.*;
 import javax.swing.border.*;
 import java.util.*;
 
+
 public class Polygons {
 
 	// Sets up Graphical User Interface
@@ -50,7 +51,7 @@ public class Polygons {
 	    slider.setPaintTicks(true);
 	    slider.setPaintLabels(true);
 	    sliderPanel.add(slider);
-	
+
 	    JLabel gridValLb = new JLabel(String.valueOf(slider.getValue()));
 	    slider.addChangeListener(new ChangeListener() {
 	    	public void stateChanged(ChangeEvent e) {
@@ -58,7 +59,7 @@ public class Polygons {
 	    	}
 	    });
 	    sliderPanel.add(gridValLb);
-	
+
 	    JButton setGridBtn = new JButton ("Set");
 	    setGridBtn.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -66,43 +67,44 @@ public class Polygons {
 	    	}
 	    });
 	    sliderPanel.add(setGridBtn);
-	
+
 	    c.gridy = 1;
 	    c.weighty = 1;
 	    sidePanel.add(sliderPanel, c);
-	
+
 	    // Color chooser
-	    JColorChooser colorChooser = new JColorChooser();
+	    JColorChooser colorChooser = new JColorChooser(Color.gray);
 	    AbstractColorChooserPanel swatchesPanel = colorChooser.getChooserPanels()[0];
 	    JPanel holder = (JPanel) swatchesPanel.getComponent(0);
 	    holder.remove(2);
 	    holder.remove(1);
-	
+
 	    ColorSelectionModel model = colorChooser.getSelectionModel();
 	    ChangeListener changeListener = new ChangeListener() {
 	    	public void stateChanged(ChangeEvent changeEvent) {
 	    		Color newColor = colorChooser.getColor();
 	    		canvas.setColor(newColor);
+
 	    	}
 	    };
 	    model.addChangeListener(changeListener);
 	    c.gridy = 2;
 	    c.weighty = 1;
 	    sidePanel.add(swatchesPanel, c);
-	
+
 	    // Polygon list
 	    JPanel polygonPanel = new JPanel();
 	    polygonPanel.setBorder(new TitledBorder("Polygons"));
-	
+
 	    JList<String> polygonList = canvas.getPolygonList();
-	
+
 	    JScrollPane listScroller = new JScrollPane(polygonList);
 	    listScroller.setPreferredSize(new Dimension(250, 120));
 	    polygonPanel.add(listScroller);
-	
+
 	    JPanel buttons = new JPanel();
 	    buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
-	    
+
 	    JButton newPolygonBtn = new JButton ("New Polygon");
 	    newPolygonBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -113,7 +115,7 @@ public class Polygons {
 	    newPolygonBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    buttons.add(newPolygonBtn);
 	    buttons.add(Box.createRigidArea(new Dimension(0, 10)));
-	    
+
 	    JButton deletePolygonBtn = new JButton ("Delete Polygon");
 	    deletePolygonBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -124,25 +126,25 @@ public class Polygons {
 	    deletePolygonBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    buttons.add(deletePolygonBtn);
 	    buttons.add(Box.createRigidArea(new Dimension(0, 10)));
-	    
+
 	    JCheckBox labelsChb = new JCheckBox("Labels");
 	    labelsChb.setAlignmentX(Component.LEFT_ALIGNMENT);
 	    labelsChb.setSelected(canvas.drawLabels);
 	    labelsChb.addChangeListener(new ChangeListener() {
 	    	public void stateChanged(ChangeEvent e) {
 	    		canvas.drawLabels = labelsChb.isSelected();
-	    		//canvas.repaint();
+	    		canvas.repaint();
 	    	}
 	    });
 	    buttons.add(labelsChb);
-	    
+
 	    polygonPanel.add(buttons);
-	
+
 	    c.gridy = 3;
 	    c.weighty = 1;
 		//c.weightx = 2;
 	    sidePanel.add(polygonPanel, c);
-	    
+
 	    // Draw button
 	    JButton drawPolygonBtn = new JButton("Draw Polygon");
 	    drawPolygonBtn.addActionListener(new ActionListener() {
@@ -154,16 +156,16 @@ public class Polygons {
 	    c.weighty = 20;
 		//c.weightx = 2;
 	    sidePanel.add(drawPolygonBtn, c);
-	
+
 	  	frame.add(sidePanel, BorderLayout.LINE_START);
-	
+
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  	frame.setSize(700, 500);
 	  	//frame.pack();
 	  	frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 	}
-	
+
 	public static void main(String[] args) {
 		setGUI();
 	}
