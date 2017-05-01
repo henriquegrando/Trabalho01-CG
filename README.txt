@@ -1,4 +1,4 @@
-Estrutura do código até então:
+﻿Estrutura do código até então:
 Classe Polygons:
 	- Classe principal, main, setupGUI
 Classe DrawCanvas:
@@ -10,10 +10,10 @@ Classe DrawCanvas:
 	- JList<String> polygonList : elemento da GUI que exibe os nomes dos polígonos da lista polygonNames na interface
 
 Classe Polygon:
-	- Gerencia cada polígono desenhado em tela. Deve implementar os códigos que moça pediu.
+	- Gerencia cada polígono desenhado em tela. Deve implementar os códigos de preenchimento de polígono.
 	Estrutura da classe:
 	- ArrayList<Point> vertices : lista de vértices adicionados através de cliques do mouse no canvas
-	- ArrayList<Pixels> pixels : pixels de preenchimento/arestas gerado pelo código que a moça pediu
+	- ArrayList<Pixels> pixels : pixels de preenchimento/arestas gerado pelo preenchimento de polígonos
 	- Graphics g : tela onde são desenhadas a grade, os pixels, etc
 
 FAQ
@@ -23,13 +23,13 @@ A classe DrawCanvas gerencia uma lista com todos os polígonos definidos pelo us
 Fornece uma estrutura para pintar "pixels" na grade, assim como gerar a própria grade. Essa estrutura funciona da seguinte forma:
 	- Usuário clica em um espaço
 	- Um ponto da grade é adicionado ao polígono selecionado (se nenhum, cria um novo)
-		- Se for o terceiro vértice adicionado, chama a função fillPolygon (código da moça) que deverá preencher o polígono
+		- Se for o terceiro vértice adicionado, chama a função fillPolygon que deverá preencher o polígono
 	- Chama-se a função repaint(), que irá chamar (internamente) paintComponent
 	- A grade é redesenhada e é chamado paintPolygon para cada polígono
 	- paintPolygon percorre as listas de vértices e pixels pintando um retângulo do tamanho dos quadrados da grade (equivale a um pixel)
 A class Polygon contém todas as informações relativas a cor, vértices e pixels de um polígono
 
-. Como implementar os códigos pedidos em aula pela moça?
+. Como implementar os códigos de preenchimento de polígono?
 Onde houver "paintPixel" no código, deve-se, ao invés, chamar a função "addPixel(Point p)"
 . Como determinar as coordenadas corretas do ponto p?
 ---|------|------|------|------|------|---  ]

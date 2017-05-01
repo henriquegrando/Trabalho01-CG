@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import Edges.Edge;
@@ -191,8 +190,7 @@ public class Polygon {
 	private void buildEdgeTable() {
 		//Point v1, v2;
 		Point v2;
-		Edge edge;
-		int xmin, xmax, ymin, ymax, num, den, index;
+		int xmin, ymin, ymax, num, den, index;
 
 		for (Point v1 : vertices) {
 			index = vertices.indexOf(v1);
