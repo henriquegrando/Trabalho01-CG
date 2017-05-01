@@ -134,6 +134,9 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 		if (p.sizeOfVertices() < 3)
 			JOptionPane.showMessageDialog(null, "Polygon must have at least three distinct vertices.", "Warning", JOptionPane.WARNING_MESSAGE);
 
+		else if (p.checkDegenerate())
+			JOptionPane.showMessageDialog(null, "Degenerate polygon.", "Warning", JOptionPane.WARNING_MESSAGE);
+		
 		else p.fillPolygon();
 
 		// Clear the vertices list so the vertices markers don't get painted

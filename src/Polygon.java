@@ -66,6 +66,45 @@ public class Polygon {
 
 		pixels.add(new Point(x, y));
 	}
+	
+	public boolean checkDegenerate() {
+		float m;
+		Point v1, v2;
+		v1 = vertices.get(0);
+		v2 = vertices.get(1);
+		
+		// Check if polygon is a horizontal line
+		for (int i = 1; i < vertices.size(); i++) {
+			v2 = vertices.get(i);
+			if (v2.y != v1.y)
+				break;
+			
+			if (i == vertices.size() - 1)
+				return true;
+		}
+		
+		// Check if polygon is a vertical line
+		for (int i = 1; i < vertices.size(); i++) {
+			v2 = vertices.get(i);
+			if (v2.x != v1.x)
+				break;
+			
+			if (i == vertices.size() - 1)
+				return true;
+		}
+		
+		m = (v2.y - v1.y)/(v2.x - v1.x);
+		
+		for (int i = 2; i < vertices.size(); i++) {
+			v2 = vertices.get(i);
+			if((v2.y - v1.y)/(v2.x - v1.x) != m)
+				return false;
+			else
+				m = (v2.y - v1.y)/(v2.x - v1.x);
+		}
+		
+		return true;
+	}
 
 	// Paints a polygon using the stored vertices and pixels
 	public void paintPolygon(Graphics g, int left, int top, boolean drawLabels) {
