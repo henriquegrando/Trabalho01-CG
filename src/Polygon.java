@@ -20,6 +20,7 @@ public class Polygon {
 
 	Color color;
 	int gridSize;
+	public boolean drawn = false;
 
 	public Polygon(int gridSize) {
 		vertices = new ArrayList<Point>();
@@ -67,16 +68,19 @@ public class Polygon {
 	}
 	
 	public boolean checkDegenerate() {
-		float m;
+		float m, new_m;
 		Point v1, v2;
 		v1 = vertices.get(0);
-		v2 = vertices.get(1);
 		
 		// Check if polygon is a horizontal line
 		for (int i = 1; i < vertices.size(); i++) {
 			v2 = vertices.get(i);
-			if (v2.y != v1.y)
-				break;
+			
+			if (v2.y != v1.y) {
+				if (i > 1)
+					return false;
+				else break;
+			}
 			
 			if (i == vertices.size() - 1)
 				return true;
@@ -85,18 +89,30 @@ public class Polygon {
 		// Check if polygon is a vertical line
 		for (int i = 1; i < vertices.size(); i++) {
 			v2 = vertices.get(i);
-			if (v2.x != v1.x)
-				break;
+			
+			if (v2.x != v1.x) {
+				if (i > 1)
+					return false;
+				else break;
+			}
 			
 			if (i == vertices.size() - 1)
 				return true;
 		}
 		
+		v2 = vertices.get(1);
 		m = (v2.y - v1.y)/(v2.x - v1.x);
 		
+		float num, den;
 		for (int i = 2; i < vertices.size(); i++) {
 			v2 = vertices.get(i);
-			if((v2.y - v1.y)/(v2.x - v1.x) != m)
+			num = (v2.y - v1.y);
+			den = (v2.x - v1.x);
+			if (den == 0)
+				continue;
+			new_m = num/den;
+			
+			if(new_m != m)
 				return false;
 			else
 				m = (v2.y - v1.y)/(v2.x - v1.x);
@@ -139,7 +155,7 @@ public class Polygon {
 			y += this.gridSize;
 		}
 
-		System.out.println(line);
+		//System.out.println(line);
 
 		while (!edgeTable.isEmpty() || !activeEdgeTable.isEmpty() || line != null) {
 			// Add in the AET all edges starting at the currently scanned line
@@ -149,15 +165,15 @@ public class Polygon {
 				}
 			}
 
-			System.out.println("y: " + y);
+			//System.out.println("y: " + y);
 
 			Collections.sort(activeEdgeTable);
 
 			// Remove from the AET all edges ending at the currently scanned line
 			for (int i = 0; i < activeEdgeTable.size(); i++) {
 				if (activeEdgeTable.get(i).getYmax() == y) {
-					System.out.println("Removed: ");
-					System.out.println(activeEdgeTable.get(i).toString());
+					//System.out.println("Removed: ");
+					//System.out.println(activeEdgeTable.get(i).toString());
 					activeEdgeTable.remove(i);
 					i--;
 				}
@@ -174,7 +190,7 @@ public class Polygon {
 			}
 
 			// Print active edge table
-			System.out.println(activeEdgeTable);
+			//System.out.println(activeEdgeTable);
 
 			y += this.gridSize;
 			line = edgeTable.getLine(y);
@@ -183,6 +199,8 @@ public class Polygon {
 			for (Edge e : activeEdgeTable)
 				e.scan(this.gridSize);
 		}
+		
+		drawn = true;
 	}
 
 	// Builds the Edges of the Polygon based on the list of vertices

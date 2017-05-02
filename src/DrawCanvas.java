@@ -131,6 +131,9 @@ public class DrawCanvas extends JPanel implements MouseInputListener {
 
 		Polygon p = polygons.get(k);
 
+		if (p.drawn)
+			return;
+		
 		if (p.sizeOfVertices() < 3)
 			JOptionPane.showMessageDialog(null, "Polygon must have at least three distinct vertices.", "Warning", JOptionPane.WARNING_MESSAGE);
 
